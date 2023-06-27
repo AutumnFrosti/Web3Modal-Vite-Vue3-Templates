@@ -1,7 +1,7 @@
 // 相关依赖
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/html'
-import { configureChains, createClient } from '@wagmi/core'
+import { configureChains, createConfig } from '@wagmi/core'
 
 //选择网络
 import {
@@ -17,11 +17,11 @@ const projectId = import.meta.env.VITE_PROJECT_KEY // 输入你在 https://cloud
 export const initModal = (): Web3Modal => {
   const chains = [arbitrum, mainnet, polygon, zkSyncTestnet]
 
-  const { provider } = configureChains(chains, [w3mProvider({ projectId })])
-  const wagmiClient = createClient({
+  const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+  const wagmiClient = createConfig({
     autoConnect: true,
-    connectors: w3mConnectors({ projectId, version: 1, chains }),
-    provider,
+    connectors: w3mConnectors({ projectId, chains }),
+    publicClient,
   })
   const ethereumClient = new EthereumClient(wagmiClient, chains)
   const web3modal = new Web3Modal({ projectId }, ethereumClient)

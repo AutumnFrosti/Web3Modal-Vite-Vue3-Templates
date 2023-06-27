@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { reactive, ref, onBeforeMount, onMounted } from 'vue'
 import { initModal } from './hooks/Useweb3modal'
-import { useAccount, UseNetwork } from './hooks/UseNetInfo'
+import { useAccount, UseNetwork, useWeb3 } from './hooks/UseNetInfo'
 import { Chain, watchAccount, watchNetwork } from '@wagmi/core'
 
 let ShowAccount = ref()
@@ -32,6 +32,8 @@ onMounted(() => {
     showChain.value = LinkNetwork
   }
   console.log(LinkNetwork)
+
+  useWeb3()
 })
 </script>
 

@@ -1,9 +1,10 @@
 import {
   getAccount,
-  fetchSigner,
+  getWalletClient,
   Connector,
-  Signer,
+  WalletClient,
   getNetwork,
+  getPublicClient,
 } from '@wagmi/core'
 import { optimism } from '@wagmi/core/chains'
 
@@ -16,6 +17,8 @@ interface AccountInfo {
   isDisconnected: boolean
   status: 'connecting' | 'reconnecting' | 'connected' | 'disconnected'
 }
+
+import Web3 from 'web3'
 
 //登录的信息
 export const useAccount = (): AccountInfo => {
@@ -31,8 +34,8 @@ export const UseNetwork = (): any[] => {
 
 export const useSigner = async (chainId: {
   chainId: number
-}): Promise<Signer | null> => {
-  const signer = await fetchSigner({
+}): Promise<WalletClient | null> => {
+  const signer = await getWalletClient({
     chainId: optimism.id,
   })
   if (signer) {
@@ -40,4 +43,14 @@ export const useSigner = async (chainId: {
   } else {
     return null
   }
+}
+
+export const useWeb3 = () => {
+  const provider: any = getPublicClient({
+    chainId: 280,
+  })
+
+  const RPCUrl = provider?.chain?.rpcUrls?.public?.http[0]
+  const web3 = new Web3(RPCUrl)
+  console.log(web3)
 }
